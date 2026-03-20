@@ -1,0 +1,24 @@
+{
+  "task_description": "Visit TechCrunch and find the 3 most important AI funding news recently.",
+  "task_type": "tech",
+  "urls": [],
+  "max_steps": 3,
+  "step_count": 1,
+  "current_url": "",
+  "last_successful_url": "",
+  "current_page_content": "Here are the 3 most important and recent AI funding news items from TechCrunch:\n\n1. **Humans&**\n   - **Amount Raised:** $480 million (Seed round)\n   - **Date:** January 20, 2026\n   - **Summary:** A 'human-centric' AI startup founded by alumni from Anthropic, xAI, and Google, representing one of the largest seed rounds in recent history.\n\n2. **Quanta**\n   - **Amount Raised:** $4.7 million\n   - **Date:** February 27, 2025\n   - **Summary:** A startup focused on integrating AI into the accounting industry to automate and enhance financial workflows.\n\n3. **OpenAI and SoftBank (Stargate Project)**\n   - **Amount Raised:** Reportedly $19 billion each (Total $38 billion)\n   - **Date:** January 23, 2025\n   - **Summary:** The two companies are reportedly investing heavily in the 'Stargate' data center project to build massive infrastructure for the next generation of AI models.",
+  "screenshot_history": [],
+  "visited_urls": [],
+  "extracted_data": [],
+  "analysis_report": "",
+  "next_step": "retry",
+  "error_count": 1,
+  "last_error": "analyst_node failed: Error code: 401 - {'error': {'message': \"You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.\", 'type': 'invalid_request_error', 'param': None, 'code': None}}",
+  "requires_human_input": false,
+  "human_note": "",
+  "metadata": {
+    "task_id": "local_924c41d5",
+    "thread_id": "924c41d5-2354-4857-b7ef-c38ab54e6989",
+    "runtime": "standalone"
+  }
+}
