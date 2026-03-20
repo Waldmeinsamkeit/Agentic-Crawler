@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from typing import Any
 
@@ -18,18 +18,21 @@ class CompetitorSchema(BaseModel):
 
 
 class CompetitorAnalyst(GeneralAnalyst):
-    async def run(self, input_data: str, **kwargs: Any) -> dict[str, Any]:
+    async def run(self, browser_content: str, **kwargs: Any) -> dict[str, Any]:
         task_description = kwargs.get("task_description", "")
         prompt = (
-            "你是竞品监控分析专家。"
-            "请从内容中提取品牌、产品、价格、核心功能、用户评价，最后给出总结。\n"
-            f"任务描述: {task_description}\n"
-            f"网页内容:\n{input_data}"
+            "You are a competitor intelligence analyst.\n"
+            "Extract brand, product, price, key features, and user feedback.\n"
+            "Use only the provided browser content.\n\n"
+            f"Task Description:\n{task_description}\n\n"
+            f"Browser Content:\n{browser_content}"
         )
         try:
             structured = self.model.with_structured_output(CompetitorSchema)
             result = await structured.ainvoke(prompt)
-            parsed = result if isinstance(result, CompetitorSchema) else CompetitorSchema.model_validate(result)
+            parsed = (
+                result if isinstance(result, CompetitorSchema) else CompetitorSchema.model_validate(result)
+            )
             payload = parsed.model_dump()
             return {
                 "structured_json": payload,
@@ -39,4 +42,3 @@ class CompetitorAnalyst(GeneralAnalyst):
             }
         except Exception:
             return await self._invoke_with_optional_structure(prompt)
-

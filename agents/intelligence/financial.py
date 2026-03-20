@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from typing import Any
 
@@ -18,13 +18,14 @@ class FinancialSchema(BaseModel):
 
 
 class FinancialAnalyst(GeneralAnalyst):
-    async def run(self, input_data: str, **kwargs: Any) -> dict[str, Any]:
+    async def run(self, browser_content: str, **kwargs: Any) -> dict[str, Any]:
         task_description = kwargs.get("task_description", "")
         prompt = (
-            "你是金融情报分析专家。"
-            "请提取企业关键财务指标、增长信号和风险点，并给出结论。\n"
-            f"任务描述: {task_description}\n"
-            f"网页内容:\n{input_data}"
+            "You are a financial intelligence analyst.\n"
+            "Extract key financial metrics, growth signals, and risk points.\n"
+            "Use only the provided browser content.\n\n"
+            f"Task Description:\n{task_description}\n\n"
+            f"Browser Content:\n{browser_content}"
         )
         try:
             structured = self.model.with_structured_output(FinancialSchema)
@@ -39,4 +40,3 @@ class FinancialAnalyst(GeneralAnalyst):
             }
         except Exception:
             return await self._invoke_with_optional_structure(prompt)
-
