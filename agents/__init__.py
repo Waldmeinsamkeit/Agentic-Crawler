@@ -9,6 +9,7 @@ from .intelligence import (
     create_intelligence_agent,
 )
 from .runners import default_analyst_runner, default_browser_runner
+from .supervisor import SubTask, SupervisorAgent, TaskPlan
 
 __all__ = [
     "BaseAgent",
@@ -19,4 +20,7 @@ __all__ = [
     "create_intelligence_agent",
     "default_browser_runner",
     "default_analyst_runner",
+    "SubTask",
+    "TaskPlan",
+    "SupervisorAgent",
 ]

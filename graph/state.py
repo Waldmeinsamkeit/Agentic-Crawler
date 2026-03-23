@@ -34,6 +34,10 @@ class AgentState(TypedDict):
     urls: list[str]
     max_steps: int
     step_count: int
+    plan_summary: str
+    task_plan: dict[str, Any]
+    sub_tasks: list[dict[str, Any]]
+    worker_outputs: Annotated[list[dict[str, Any]], add]
 
     # Browser execution state
     current_url: str

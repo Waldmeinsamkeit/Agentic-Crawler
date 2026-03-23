@@ -1,0 +1,61 @@
+2026-03-23 17:08:21 | INFO     | [89c66df6-6339-4398-9958-977470d7538e] | AI-Crawler : Start daily command: 今日科技情报：抓取AI融资、模型发布与监管动态
+2026-03-23 17:08:21 | INFO     | [89c66df6-6339-4398-9958-977470d7538e] | AI-Crawler : Task type: auto
+2026-03-23 17:08:21 | INFO     | [89c66df6-6339-4398-9958-977470d7538e] | AI-Crawler : Task log file: F:\海外\repo\my-agent-framework\data\logs\89c66df6-6339-4398-9958-977470d7538e.log
+2026-03-23 17:08:24 | ERROR    | [89c66df6-6339-4398-9958-977470d7538e] | AI-Crawler : Daily command failed: Error code: 400 - {'error': {'message': 'This response_format type is unavailable now', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}
+Traceback (most recent call last):
+  File "F:\海外\repo\my-agent-framework\main.py", line 57, in run_standalone_daily_command
+    async for event in app.astream(initial_state, config=config):
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\pregel\main.py", line 3111, in astream
+    async for _ in runner.atick(
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 304, in atick
+    await arun_with_retry(
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 211, in arun_with_retry
+    return await task.proc.ainvoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 705, in ainvoke
+    input = await asyncio.create_task(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 473, in ainvoke
+    ret = await self.afunc(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\graph\nodes\supervisor.py", line 29, in supervisor_plan_node
+    plan = await supervisor.create_plan(daily_command)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\agents\supervisor.py", line 36, in create_plan
+    result = await planner.ainvoke(prompt)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 3197, in ainvoke
+    input_ = await coro_with_context(part(), context, create_task=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 5708, in ainvoke
+    return await self.bound.ainvoke(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 425, in ainvoke
+    llm_result = await self.agenerate_prompt(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1160, in agenerate_prompt
+    return await self.agenerate(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1118, in agenerate
+    raise exceptions[0]
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1387, in _agenerate_with_cache
+    result = await self._agenerate(
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1671, in _agenerate
+    _handle_openai_bad_request(e)
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1638, in _agenerate
+    raw_response = await self.root_async_client.chat.completions.with_raw_response.parse(  # noqa: E501
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\openai\_legacy_response.py", line 381, in wrapped
+    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1670, in parse
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\openai\_base_client.py", line 1881, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\openai\_base_client.py", line 1666, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': 'This response_format type is unavailable now', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_request_error'}}
+During task with name 'supervisor_plan' and id '17b3d2fe-8d27-902e-babb-6bf6740247ce'

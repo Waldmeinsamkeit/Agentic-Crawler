@@ -3,6 +3,8 @@ from __future__ import annotations
 import inspect
 from typing import Any
 
+from langchain_core.runnables.config import RunnableConfig
+
 from graph.schema import BrowserResult
 from graph.state import AgentState
 from agents.runners import default_browser_runner
@@ -28,9 +30,13 @@ def _call_runner_with_compatible_kwargs(runner: Any, **kwargs: Any) -> Any:
     return runner(**accepted)
 
 
-async def browser_node(state: AgentState) -> dict[str, Any]:
+async def browser_node(
+    state: AgentState,
+    config: RunnableConfig | None = None,
+) -> dict[str, Any]:
     services = state.get("services")
     browser_runner = services.browser_runner if services else default_browser_runner
+    thread_id = str((config or {}).get("configurable", {}).get("thread_id", "default_user"))
 
     llm = ModelFactory.get_model(scene=ModelFactory.SCENE_BROWSER)
     try:
@@ -56,6 +62,7 @@ async def browser_node(state: AgentState) -> dict[str, Any]:
                 visited_urls=visited_urls,
                 step_count=state.get("step_count", 0),
                 metadata=state.get("metadata", {}),
+                thread_id=thread_id,
                 llm=llm,
                 fallback_llm=fallback_llm,
             )

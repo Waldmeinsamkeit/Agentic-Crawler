@@ -1,0 +1,72 @@
+2026-03-23 17:15:00 | INFO     | [6819e5d0-c735-4bbe-a851-8c4898082675] | AI-Crawler : Start daily command: 今日科技情报：抓取AI融资、模型发布与监管动态
+2026-03-23 17:15:00 | INFO     | [6819e5d0-c735-4bbe-a851-8c4898082675] | AI-Crawler : Task type: auto
+2026-03-23 17:15:00 | INFO     | [6819e5d0-c735-4bbe-a851-8c4898082675] | AI-Crawler : Task log file: F:\海外\repo\my-agent-framework\data\logs\6819e5d0-c735-4bbe-a851-8c4898082675.log
+2026-03-23 17:15:24 | INFO     | [6819e5d0-c735-4bbe-a851-8c4898082675] | AI-Crawler : Node finished: supervisor_plan
+2026-03-23 17:15:24 | INFO     | [6819e5d0-c735-4bbe-a851-8c4898082675] | AI-Crawler : Plan summary: 今日科技情报抓取计划：聚焦AI领域融资事件、新模型发布及监管动态三大主题，通过并行抓取主流科技媒体、头部AI公司官网及监管机构公告页，确保信息全面、及时。
+2026-03-23 17:15:24 | INFO     | [6819e5d0-c735-4bbe-a851-8c4898082675] | AI-Crawler : Subtasks count: 8
+2026-03-23 17:17:06 | ERROR    | [6819e5d0-c735-4bbe-a851-8c4898082675] | AI-Crawler : Daily command failed: Error code: 401 - {'error': {'message': "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.", 'type': 'invalid_request_error', 'param': None, 'code': None}}
+Traceback (most recent call last):
+  File "F:\海外\repo\my-agent-framework\main.py", line 57, in run_standalone_daily_command
+    async for event in app.astream(initial_state, config=config):
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\pregel\main.py", line 3111, in astream
+    async for _ in runner.atick(
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 410, in atick
+    _panic_or_proceed(
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 520, in _panic_or_proceed
+    raise exc
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 211, in arun_with_retry
+    return await task.proc.ainvoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 705, in ainvoke
+    input = await asyncio.create_task(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 473, in ainvoke
+    ret = await self.afunc(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\graph\nodes\supervisor.py", line 65, in browser_worker_node
+    analysis_result = await _maybe_await(
+                      ^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\graph\nodes\supervisor.py", line 16, in _maybe_await
+    return await value
+           ^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\agents\runners.py", line 68, in default_analyst_runner
+    return await analyst.run(page_content, task_description=task_description, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\agents\intelligence\general.py", line 59, in run
+    return await self._invoke_with_optional_structure(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\agents\intelligence\general.py", line 78, in _invoke_with_optional_structure
+    text = await self._invoke_text(model, prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\agents\intelligence\general.py", line 88, in _invoke_text
+    response = await model.ainvoke(prompt)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 425, in ainvoke
+    llm_result = await self.agenerate_prompt(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1160, in agenerate_prompt
+    return await self.agenerate(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1118, in agenerate
+    raise exceptions[0]
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1387, in _agenerate_with_cache
+    result = await self._agenerate(
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1673, in _agenerate
+    _handle_openai_api_error(e)
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1666, in _agenerate
+    raw_response = await self.async_client.with_raw_response.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\openai\_legacy_response.py", line 381, in wrapped
+    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2678, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\openai\_base_client.py", line 1881, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\海外\repo\my-agent-framework\.venv\Lib\site-packages\openai\_base_client.py", line 1666, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.AuthenticationError: Error code: 401 - {'error': {'message': "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.", 'type': 'invalid_request_error', 'param': None, 'code': None}}
+During task with name 'browser_worker' and id '5f3aacdf-2a84-77ee-be0b-188506e49c82'

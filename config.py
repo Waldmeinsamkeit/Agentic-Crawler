@@ -30,6 +30,8 @@ class Settings(BaseSettings):
     RETRY_LIMIT: int = 3
     MAX_CONCURRENT_TASKS: int = 3
     DEFAULT_SCRAPE_TIMEOUT: int = 90
+    LOG_LEVEL: str = "INFO"
+    LOG_DIR: Optional[Path] = None
 
     # Browser-use behavior
     HEADLESS: bool = True
@@ -103,6 +105,14 @@ class Settings(BaseSettings):
             return self.BASE_DIR / self.SCREENSHOT_DIR
         return self.BASE_DIR / "outputs" / "screenshots"
 
+    @property
+    def log_dir(self) -> Path:
+        if self.LOG_DIR:
+            if self.LOG_DIR.is_absolute():
+                return self.LOG_DIR
+            return self.BASE_DIR / self.LOG_DIR
+        return self.base_data_dir / "logs"
+
 
 settings = Settings()
 settings.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -110,6 +120,7 @@ settings.checkpoint_db_path.parent.mkdir(parents=True, exist_ok=True)
 settings.reports_db_path.parent.mkdir(parents=True, exist_ok=True)
 settings.base_data_dir.mkdir(parents=True, exist_ok=True)
 settings.screenshot_dir.mkdir(parents=True, exist_ok=True)
+settings.log_dir.mkdir(parents=True, exist_ok=True)
 
 # Ensure browser-use can write config in project-scoped directory (avoids OS permission issues)
 resolved_browser_use_config_dir = (

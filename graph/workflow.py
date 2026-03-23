@@ -7,9 +7,17 @@ from pathlib import Path
 from typing import Any, AsyncIterator, Iterable
 
 from langgraph.graph import END, StateGraph
+from langgraph.types import Send
 
 from graph.edges import route_after_analyst, route_after_browser
-from graph.nodes import analyst_node, browser_node, init_state_node
+from graph.nodes import (
+    analyst_node,
+    browser_node,
+    browser_worker_node,
+    final_summarizer_node,
+    init_state_node,
+    supervisor_plan_node,
+)
 from graph.state import AgentState
 
 
@@ -128,6 +136,53 @@ def create_scraping_graph(
             "end": END,
         },
     )
+
+    compile_kwargs: dict[str, Any] = {}
+    if checkpointer is not None:
+        compile_kwargs["checkpointer"] = checkpointer
+
+    normalized_before = _normalize_interrupt_nodes(interrupt_before)
+    normalized_after = _normalize_interrupt_nodes(interrupt_after)
+    if normalized_before:
+        compile_kwargs["interrupt_before"] = normalized_before
+    if normalized_after:
+        compile_kwargs["interrupt_after"] = normalized_after
+
+    return workflow.compile(**compile_kwargs)
+
+
+def _distribute_tasks(state: AgentState) -> list[Send]:
+    tasks = state.get("sub_tasks", [])
+    sends: list[Send] = []
+    for task in tasks:
+        payload = {
+            "id": task.get("id"),
+            "target_url": task.get("target_url", ""),
+            "task_goal": task.get("task_goal", ""),
+            "priority": task.get("priority", 1),
+            "task_type": state.get("task_type", "auto"),
+            "metadata": state.get("metadata", {}),
+        }
+        sends.append(Send("browser_worker", payload))
+    return sends
+
+
+def create_full_graph(
+    *,
+    checkpointer: Any | None = None,
+    interrupt_before: Iterable[str] | None = None,
+    interrupt_after: Iterable[str] | None = None,
+):
+    workflow = StateGraph(AgentState)
+
+    workflow.add_node("supervisor_plan", supervisor_plan_node)
+    workflow.add_node("browser_worker", browser_worker_node)
+    workflow.add_node("final_summarizer", final_summarizer_node)
+
+    workflow.set_entry_point("supervisor_plan")
+    workflow.add_conditional_edges("supervisor_plan", _distribute_tasks, ["browser_worker"])
+    workflow.add_edge("browser_worker", "final_summarizer")
+    workflow.add_edge("final_summarizer", END)
 
     compile_kwargs: dict[str, Any] = {}
     if checkpointer is not None:
